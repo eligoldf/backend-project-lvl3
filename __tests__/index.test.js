@@ -1,26 +1,33 @@
 import os from 'os';
 import path from 'path';
 import nock from 'nock';
-import axios from 'axios';
-import httpAdapter from 'axios/lib/adapters/http';
 import { promises as fs } from 'fs';
 import {
-  test, beforeEach, beforeAll, expect,
+  test, beforeEach, expect,
 } from '@jest/globals';
-import extractUrl from '../src/utils';
+import pageLoader from '../src';
 
 nock.disableNetConnect();
 
+const baseUrl = 'https://ru.hexlet.io/';
+
+const pathToHtml = `${__dirname}/__fixtures/index.html`;
+
+let tmpDir = '';
+
 beforeEach(async () => {
-  await fs.mkdtemp(path.join(os.tmpdir(), 'page-loader-'));
+  tmpDir = await fs.mkdtemp(path.join(os.tmpdir(), 'page-loader-'));
 });
 
-// test('extractUrl', () => {
-//   const baseUrl = 'https://ru.hexlet.io/courses';
-//   const extractedUrl = 'ru-hexlet-io-courses.html';
-//   expect(extractUrl(baseUrl)).toBe(extractedUrl);
-// });
+test('extractUrl', async () => {
+  const responseBody = await fs.readFile(pathToHtml, 'utf-8');
 
-test('must work', async () => {
+  nock(baseUrl)
+    .get('/courses')
+    .reply(200, responseBody);
 
-})
+  const promise = pageLoader(`${baseUrl}/courses`, tmpDir);
+  await expect(promise).resolves.toBe('Done');
+  const result = await fs.readFile(`${tmpDir}/hexlet-io-courses.html`, 'utf-8');
+  expect(result).toBe(responseBody);
+});
