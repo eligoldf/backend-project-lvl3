@@ -37,6 +37,7 @@
   },
   "homepage": "https://github.com/eligoldf/backend-project-lvl3#readme",
   "devDependencies": {
+    "@babel/plugin-transform-runtime": "^7.15.0",
     "@babel/preset-env": "^7.15.0",
     "@jest/globals": "^27.0.6",
     "babel-jest": "^27.0.6",

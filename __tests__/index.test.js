@@ -7,11 +7,11 @@ import {
 } from '@jest/globals';
 import pageLoader from '../src';
 
-nock.disableNetConnect();
+// nock.disableNetConnect();
 
-const baseUrl = 'https://ru.hexlet.io/';
+const baseUrl = 'https://hexlet.io';
 
-const pathToHtml = `${__dirname}/__fixtures/index.html`;
+const pathToHtml = `${__dirname}/__fixtures__/index.html`;
 
 let tmpDir = '';
 
@@ -19,7 +19,7 @@ beforeEach(async () => {
   tmpDir = await fs.mkdtemp(path.join(os.tmpdir(), 'page-loader-'));
 });
 
-test('extractUrl', async () => {
+test('pageLoader', async () => {
   const responseBody = await fs.readFile(pathToHtml, 'utf-8');
 
   nock(baseUrl)
