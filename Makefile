@@ -1,12 +1,9 @@
-install: install-deps
-
-start:
-	npx babel-node dist/bin/page-loader.js
+install: install
 
 run:
-	bin/nodejs-package.js 10
+	bin/page-loader.mjs ${flag} ${path} ${url}
 
-install-deps:
+install:
 	npm ci
 
 test:
@@ -19,6 +16,9 @@ lint:
 	npx eslint .
 
 publish:
-	npm publish --dry-run
+	npm publish
+
+install-local:
+	npm link
 
 .PHONY: test
